@@ -26,12 +26,7 @@ module ActiveAdmin
 
         http_verb = options.fetch :http_verb, :put
 
-        action_item_args = if ActiveAdmin::VERSION.start_with?('0.')
-                             [{ only: :show }]
-                           else
-                             ["state_action_#{action}", { only: :show }]
-                           end
-        action_item(*action_item_args) do
+        action_item action, only: :show do
           if resource.send("can_#{action}?") && authorized?(options[:permission], resource)
             path = resource_path << "/#{action}"
             label = I18n.t("#{plural}.#{action}.label", default: action.to_s.titleize)
